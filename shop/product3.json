@@ -1,0 +1,11 @@
+{
+  "image": "https://res.cloudinary.com/dthdoxldn/image/upload/v1750961232/3_jm92xe.png",
+  "title": "Mindset Mastery Course",
+  "description": "Transform your thinking with this comprehensive mindset course...",
+  "category": "Mindset",
+  "price": "$99",
+  "originalPrice": "$149",
+  "stripeLink": "https://buy.stripe.com/your-stripe-link-1",
+  "width": 800,
+  "height": 600
+}
