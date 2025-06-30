@@ -28,51 +28,190 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
 <style>
-    /* PWA Splash Screen Styles */
+    /* ============ BASE VARIABLES ============ */
+    :root {
+      /* Spacing & Layout */
+      --radius: 16px;
+      --border: 1px;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      
+      /* Light Theme Colors */
+      --bg: #f8fafc;
+      --fg: #1a1a1a;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      
+      /* Accent Gradient */
+      --gradient: linear-gradient(135deg, #28F29C 0%, #0CB8E0 50%, #635DFF 100%);
+      
+      /* Typography */
+      --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+      --text-shadow: none;
+    }
+
+    /* ============ DARK THEME ============ */
+    .dark-mode {
+      --bg: radial-gradient(circle at 20% 30%, hsl(210, 34%, 12%) 0%, hsl(210, 38%, 7%) 100%);
+      --fg: rgba(255, 255, 255, 0.92);
+      --card-bg: rgba(30, 41, 59, 0.85);
+      --border-color: hsl(210, 32%, 25%);
+      --shadow: 0 8px 32px rgba(12, 184, 224, 0.15);
+      --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      
+      background: var(--bg);
+      background-attachment: fixed;
+    }
+
+    /* ============ BASE STYLES ============ */
+    @supports (font-variation-settings: normal) {
+      body {
+        font-family: var(--font-inter);
+        font-variation-settings: 'wght' 400, 'slnt' 0;
+      }
+    }
+
     body {
-      font-family: 'Inter', sans-serif;
-      background-color: #ffffff;
+      font-family: var(--font-inter);
+      background-color: var(--bg);
+      color: var(--fg);
       margin: 0;
       min-height: 100vh;
-      transition: opacity 0.3s;
+      transition: background-color 0.6s var(--ease), color 0.3s var(--ease);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
     }
-    
+
+    /* ============ PWA LOADER ============ */
     .pwa-loader {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #ffffff;
+      background: var(--bg);
       z-index: 9999;
+      transition: opacity 0.3s;
     }
 
-    /* Base Styles */
-    :root {
-      --border: 1px;
-      --border-color: hsl(222, 12%, 80%);
-      --radius: 16px;
-      --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
-      --fg: #1a1a1a;
-      --bg: #f6f6f6;
+    /* ============ GLASS CARD STYLES ============ */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border: var(--border) solid var(--border-color);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: all 0.4s var(--ease);
+      position: relative;
+      overflow: hidden;
     }
 
-    .dark-mode {
-      --fg: #E0E0E0;
-      --bg: #0a1921;
-      --card-bg: rgba(30, 30, 30, 0.85);
-      --border-color: #444;
-      background: 
-        radial-gradient(circle at 20% 30%, #0a1921 0%, #071118 100%),
-        linear-gradient(135deg, 
-          rgba(40, 242, 156, 0.08) 0%, 
-          rgba(12, 184, 224, 0.12) 100%);
-      background-blend-mode: normal, overlay;
-      background-attachment: fixed;
-      transition: background 0.5s ease;
+    .glass-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .dark-mode .glass-card:hover {
+      box-shadow: 0 12px 40px rgba(12, 184, 224, 0.2);
+    }
+
+    /* ============ PROFILE STYLES ============ */
+    .profile-img {
+      background: var(--gradient);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      animation: float 6s ease-in-out infinite;
+      will-change: transform;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-12px) rotate(2deg); }
+    }
+
+    .profile-img:hover {
+      animation: none;
+      transform: scale(1.05) rotate(5deg);
+    }
+
+    /* ============ TYPOGRAPHY ============ */
+    h1 {
+      font-size: clamp(1.75rem, 5vw, 2.25rem);
+      font-variation-settings: 'wght' 700;
+      line-height: 1.2;
+    }
+
+    h2, h3 {
+      font-variation-settings: 'wght' 600;
+    }
+
+    p {
+      font-variation-settings: 'wght' 400;
+      line-height: 1.6;
+    }
+
+    .dark-mode p,
+    .dark-mode .blog-excerpt,
+    .dark-mode .post-date,
+    .dark-mode .read-time {
+      text-shadow: var(--text-shadow);
+    }
+
+    /* ============ SOCIAL ICONS & BUTTONS ============ */
+    .social-icon,
+    .action-btn {
+      transition: all 0.3s var(--ease);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      will-change: transform;
+    }
+
+    .social-icon:hover,
+    .action-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .dark-mode .social-icon:hover,
+    .dark-mode .action-btn:hover {
+      box-shadow: 0 8px 20px rgba(12, 184, 224, 0.2);
+    }
+
+    /* ============ THEME TOGGLE ============ */
+    .theme-btn:hover .theme-icon {
+      transform: rotate(15deg) scale(1.1);
+    }
+
+    .theme-icon {
+      transition: transform 0.3s var(--ease);
+    }
+
+    /* ============ PORTFOLIO TOGGLE ============ */
+    .portfolio-toggle {
+      display: flex;
+      align-items: center;
+      width: 60px;
+      height: 24px;
+      padding: 0 4px;
+      border-radius: 12px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      background: var(--gradient);
+    }
+
+    .portfolio-toggle-slider {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      transition: transform 0.3s var(--ease);
+      z-index: 1;
     }
 
     /* Glass Card Styles */
