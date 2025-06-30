@@ -2,49 +2,70 @@
 <html lang="en">
 
 <head>
+  <!-- Basic Meta -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Will Napolini</title>
+  
+  <!-- PWA Essentials -->
+  <meta name="theme-color" content="#000000"/>
+  <link rel="manifest" href="/thyshop.github.io/manifest.json">
+  <link rel="icon" href="/thyshop.github.io/assets/icons/icon-192x192.png">
+  <link rel="apple-touch-icon" href="/thyshop.github.io/assets/icons/icon-192x192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Will Napolini">
+
+  <!-- Preload Critical Assets -->
+  <link rel="preload" href="/thyshop.github.io/assets/icons/icon-192x192.png" as="image">
+  <link rel="preload" href="/thyshop.github.io/assets/icons/icon-512x512.png" as="image">
+
+  <!-- External Resources -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lucide@latest"></script>
-<style>
-  
-  /* Base Styles */
-  body {
-    font-family: 'Inter', sans-serif;
-    transition: background 0.5s ease;
-    margin: 0;
-    padding: 15px;
-    box-sizing: border-box;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    overflow-x: hidden;
-    color: var(--fg);
-    background: var(--bg);
-  }
 
-  :root {
-    --border: 1px;
-    --border-color: hsl(222, 12%, 80%);
-    --radius: 16px;
-    --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
-    --fg: #1a1a1a;
-    --bg: #f6f6f6;
-  }
+  <style>
+    /* PWA Splash Screen Styles */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      min-height: 100vh;
+      transition: opacity 0.3s;
+    }
+    
+    .pwa-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ffffff;
+      z-index: 9999;
+    }
 
-  .dark-mode {
-    --fg: #E0E0E0;
-    --bg: #121212;
-    --card-bg: rgba(30, 30, 30, 0.8);
-    --border-color: #444;
-  }
+    /* Base Styles */
+    :root {
+      --border: 1px;
+      --border-color: hsl(222, 12%, 80%);
+      --radius: 16px;
+      --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+      --fg: #1a1a1a;
+      --bg: #f6f6f6;
+    }
+
+    .dark-mode {
+      --fg: #E0E0E0;
+      --bg: #121212;
+      --card-bg: rgba(30, 30, 30, 0.8);
+      --border-color: #444;
+    }
 
   /* Glass Card Styles */
   .glass-card {
@@ -887,6 +908,17 @@
 </head>
 
 <body class="light-mode">
+  <!-- PWA Loading Indicator -->
+  <div class="pwa-loader" id="pwaLoader">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-black"></div>
+  </div>
+
+  <!-- Install Button -->
+  <button id="installButton" class="fixed bottom-4 right-4 bg-gradient-to-r from-[#28F29C] to-[#0CB8E0] text-white px-4 py-2 rounded-full shadow-lg z-50 hidden">
+    <i class="fas fa-download mr-2"></i> Install App
+  </button>
+
+  <!-- App Content -->
   <div class="app-content">
     <!-- Profile Section -->
     <div class="glass-card profile-card rounded-2xl p-4 mb-3 shadow-xl relative">
@@ -908,7 +940,7 @@
       <p class="text-center opacity-80 mb-4 text-sm">
         Mindset • Skillset • Toolset
       </p>
-      <!-- Gradient Social Media Icons -->
+      <!-- Social Media Icons -->
       <div class="grid grid-cols-4 gap-2 mb-4 px-1">
         <a href="https://t.me/willnapolini" target="_blank" rel="noopener noreferrer"
           class="social-icon glass-card rounded-xl p-3 flex items-center justify-center text-lg">
@@ -944,11 +976,14 @@
         <div class="category-filters" id="categoryFilters"></div>
       </div>
       <div class="shop-container hidden" id="shopContainer">
+        <!-- Shop items will be loaded here dynamically -->
       </div>
-      <div class="blog-container" id="blogContainer"></div>
+      <div class="blog-container" id="blogContainer">
+        <!-- Blog posts will be loaded here dynamically -->
+      </div>
     </div>
 
-    <!-- Action Buttons Section -->
+    <!-- Action Buttons -->
     <div class="flex gap-2 mb-4">
       <a href="#" class="action-btn glass-card rounded-xl p-3 flex items-center space-x-3 min-h-[60px] shadow-xl flex-1"
         data-section="contact">
@@ -981,7 +1016,6 @@
     <div class="modal-overlay absolute inset-0 opacity-50 transition-opacity duration-300"></div>
     <div class="modal-container glass-card w-11/12 md:max-w-md mx-auto rounded-xl shadow-lg z-50 overflow-y-auto transform transition-all duration-300">
       <div class="modal-content py-4 px-6">
-        <!-- Modal Header -->
         <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
           <h3 class="text-xl font-bold gradient-text">Contact Me</h3>
           <button id="modalClose" class="modal-close-btn rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-700">
@@ -989,7 +1023,6 @@
           </button>
         </div>
         
-        <!-- Modal Body - Contact Form -->
         <form id="contactForm" class="space-y-4 mt-4">
           <div>
             <label for="name" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Name</label>
@@ -1027,7 +1060,6 @@
     <div class="modal-overlay absolute inset-0 opacity-50 transition-opacity duration-300"></div>
     <div class="modal-container glass-card w-11/12 md:max-w-md mx-auto rounded-xl shadow-lg z-50 overflow-y-auto transform transition-all duration-300 max-h-[90vh]">
       <div class="modal-content py-4 px-6">
-        <!-- Modal Header -->
         <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
           <h3 class="text-xl font-bold gradient-text">Product Details</h3>
           <button class="shop-modal-close modal-close-btn rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-700">
@@ -1035,7 +1067,6 @@
           </button>
         </div>
         
-        <!-- Modal Body - Shop Item Content -->
         <div class="shop-modal-body mt-4 space-y-4">
           <div class="shop-modal-image-container rounded-lg overflow-hidden image-loading">
             <img id="shopModalImage" class="w-full h-48 object-cover lazy-img" loading="lazy">
@@ -1071,7 +1102,6 @@
     <div class="modal-overlay absolute inset-0 opacity-50 transition-opacity duration-300"></div>
     <div class="modal-container glass-card w-11/12 md:max-w-md mx-auto rounded-xl shadow-lg z-50 overflow-y-auto transform transition-all duration-300 max-h-[90vh]">
       <div class="modal-content py-4 px-6">
-        <!-- Modal Header -->
         <div class="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
           <h3 class="text-xl font-bold gradient-text">Blog</h3>
           <button class="blog-modal-close modal-close-btn rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-700">
@@ -1079,7 +1109,6 @@
           </button>
         </div>
         
-        <!-- Modal Body - Blog Post Content -->
         <div class="blog-modal-body mt-4 space-y-4">
           <div class="blog-modal-image-container rounded-lg overflow-hidden image-loading">
             <img id="blogModalImage" class="w-full h-48 object-cover lazy-img" loading="lazy">
@@ -1111,6 +1140,7 @@
       </div>
     </div>
   </div>
+  
 
   <script>
 // DOM elements
@@ -1561,6 +1591,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.filterCards = filterCards;
 
+  </script>
+
+<!-- PWA Service Worker Registration -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('pwaLoader').style.display = 'none';
+      
+      // Install Prompt Handler
+      const installButton = document.getElementById('installButton');
+      let deferredPrompt;
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installButton.classList.remove('hidden');
+        
+        installButton.addEventListener('click', async () => {
+          installButton.classList.add('hidden');
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log(`User ${outcome} the install prompt`);
+          deferredPrompt = null;
+        });
+      });
+
+      window.addEventListener('appinstalled', () => {
+        console.log('PWA installed successfully');
+        installButton.classList.add('hidden');
+      });
+
+      // Dynamic Service Worker Registration
+      const basePath = window.location.pathname.startsWith('/thyshop.github.io') 
+        ? '/thyshop.github.io' 
+        : '';
+      
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register(`${basePath}/sw.js`, { 
+          scope: basePath || '/' 
+        }).then(reg => {
+          console.log('Service Worker registered for scope:', reg.scope);
+        }).catch(err => {
+          console.error('Service Worker registration failed:', err);
+        });
+      }
+    });
+  </script>
+  
+  <!-- Initialize Lucide icons -->
+  <script>
+    lucide.createIcons();
   </script>
 </body>
 </html>
